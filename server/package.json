@@ -1,0 +1,17 @@
+{
+  "name": "spotify-server",
+  "version": "1.0.0",
+  "description": "Spotify server test app",
+  "main": "index.js",
+  "author": "AsenCME",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "body-parse": "^0.1.0",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^9.0.2",
+    "express": "^4.17.1",
+    "spotify-web-api-node": "^5.0.2"
+  }
+}
