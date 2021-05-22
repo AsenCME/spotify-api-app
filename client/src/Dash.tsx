@@ -1,5 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
+import Header from "./components/Header";
+import TopTracks from "./components/TopTracks";
+import { Me } from "./interfaces/Me";
 import useAuth from "./useAuth";
 
 const api = new SpotifyWebApi({
@@ -9,11 +12,29 @@ const api = new SpotifyWebApi({
 });
 
 export default function Dash({ code }: { code: string }) {
-  const accessToken = useAuth(code);
+  const { accessToken, refreshToken } = useAuth(code);
+  const [me, setMe] = useState<Me | null>(null);
 
   useEffect(() => {
     if (!accessToken) return;
     api.setAccessToken(accessToken);
+    api.setRefreshToken(refreshToken);
+    (async () => {
+      const res = await api.getMe();
+      setMe({
+        id: res.body.id,
+        name: res.body.display_name || "no name",
+        image: !res.body.images?.length ? "" : res.body.images[0].url,
+        followers: res.body.followers?.total || 0,
+      });
+    })();
   }, [accessToken]);
-  return <div>{accessToken}</div>;
+
+  if (!api.getAccessToken()) return null;
+  return (
+    <div style={{ maxWidth: 960, margin: "0 auto" }}>
+      {!me ? null : <Header me={me} />}
+      <TopTracks api={api} />
+    </div>
+  );
 }

@@ -9,16 +9,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const clientId = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
-const redirectUri = process.env.REDIRECT_URI;
-
 app.post("/refresh", (req, res) => {
   const refreshToken = req.body.refreshToken;
   const api = new SpotifyWebApi({
-    clientId,
-    clientSecret,
-    redirectUri,
+    clientId: "6c68970138484af086dba84c7c147503",
+    clientSecret: "524fc97a2763460598a3420b7253ee81",
+    redirectUri: "http://localhost:3000",
     refreshToken,
   });
   api
@@ -31,7 +27,7 @@ app.post("/refresh", (req, res) => {
     )
     .catch(err => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send(err);
     });
 });
 
@@ -40,7 +36,7 @@ app.post("/login", (req, res) => {
   const api = new SpotifyWebApi({
     clientId: "6c68970138484af086dba84c7c147503",
     clientSecret: "524fc97a2763460598a3420b7253ee81",
-    redirectUri: "http://localhost:3001/callback",
+    redirectUri: "http://localhost:3000",
   });
   api
     .authorizationCodeGrant(code)
@@ -53,12 +49,8 @@ app.post("/login", (req, res) => {
     )
     .catch(err => {
       console.log(err);
-      res.sendStatus(400);
+      res.status(400).send(err);
     });
-});
-
-app.post("/callback", (req, res) => {
-  console.log(req.body);
 });
 
 app.listen(3001, () => console.log("started"));

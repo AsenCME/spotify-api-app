@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function useAuth(code: string): string {
+export default function useAuth(code: string) {
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
   const [expiresIn, setExpiresIn] = useState(60);
@@ -13,8 +13,13 @@ export default function useAuth(code: string): string {
         setAccessToken(res.data.accessToken);
         setRefreshToken(res.data.refreshToken);
         setExpiresIn(res.data.expiresIn);
+        // @ts-ignore
+        window.history.pushState({}, null, "/");
       })
-      .catch(() => {});
+      .catch(() => {
+        // @ts-ignore
+        window.location = "/";
+      });
   }, [code]);
 
   useEffect(() => {
@@ -35,5 +40,5 @@ export default function useAuth(code: string): string {
     return () => clearInterval(interval);
   }, [refreshToken, expiresIn]);
 
-  return accessToken;
+  return { accessToken, refreshToken };
 }

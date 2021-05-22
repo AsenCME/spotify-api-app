@@ -1,0 +1,50 @@
+/* :root {
+  --color-1: #f0ddf8;
+  --color-2: #050406;
+  --color-3: #baaab9;
+  --color-4: #7293c1;
+  --color-5: #574546;
+  --color-6: #ad6c98;
+} */
+
+/* :root {
+  --color-1: #040305;
+  --color-2: #422e4e;
+  --color-3: #e7aa13;
+  --color-4: #4a37e4;
+  --color-5: #eaf4fd;
+  --color-6: #a4d8ea;
+  --color-7: #d642de;
+  --color-8: #ae6b7f;
+} */
+
+:root {
+  --color-1: #030202;
+  --color-2: #380498;
+  --color-3: #554c46;
+  --color-4: #caa613;
+  --color-5: #4b0bae;
+  --color-6: #be5123;
+  --color-7: #3ea44e;
+  --color-8: #cecece;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-1);
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--colors-8);
+  text-decoration: underline;
+}
+a:visited {
+  color: white;
+}
