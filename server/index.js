@@ -40,13 +40,15 @@ app.post("/login", (req, res) => {
   });
   api
     .authorizationCodeGrant(code)
-    .then(data =>
+    .then(data => {
+      api.setAccessToken(data.body.access_token);
+      api.setRefreshToken(data.body.refresh_token);
       res.json({
         accessToken: data.body.access_token,
         expiresIn: data.body.expires_in,
         refreshToken: data.body.refresh_token,
-      }),
-    )
+      });
+    })
     .catch(err => {
       console.log(err);
       res.status(400).send(err);

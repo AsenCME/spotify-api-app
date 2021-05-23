@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
+import { CustomPlaylist } from "./components/CustomPlaylist";
 import Header from "./components/Header";
 import TopTracks from "./components/TopTracks";
 import { Me } from "./interfaces/Me";
+import { Page } from "./interfaces/Page";
 import useAuth from "./useAuth";
 
 const api = new SpotifyWebApi({
@@ -14,6 +16,13 @@ const api = new SpotifyWebApi({
 export default function Dash({ code }: { code: string }) {
   const { accessToken, refreshToken } = useAuth(code);
   const [me, setMe] = useState<Me | null>(null);
+  const [page, setPage] = useState<Page>("top_tracks");
+
+  const _renderBody = () => {
+    if (page === "top_tracks") return <TopTracks api={api} />;
+    else if (page === "custom_playlist") return <CustomPlaylist api={api} />;
+    else return null;
+  };
 
   useEffect(() => {
     if (!accessToken) return;
@@ -33,8 +42,8 @@ export default function Dash({ code }: { code: string }) {
   if (!api.getAccessToken()) return null;
   return (
     <div style={{ maxWidth: 960, margin: "0 auto" }}>
-      {!me ? null : <Header me={me} />}
-      <TopTracks api={api} />
+      {!me ? null : <Header me={me} page={page} changePage={p => setPage(p)} />}
+      {_renderBody()}
     </div>
   );
 }

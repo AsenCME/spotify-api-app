@@ -1,18 +1,44 @@
 import React from "react";
 import { Me } from "../interfaces/Me";
+import { Page } from "../interfaces/Page";
 
-export default function Header({ me }: { me: Me }) {
+export default function Header({
+  me,
+  page,
+  changePage,
+}: {
+  me: Me;
+  page: Page;
+  changePage: (p: Page) => void;
+}) {
+  const _renderLink = (text: string, p: Page) => {
+    return (
+      <div
+        style={{ marginRight: 16, cursor: "pointer" }}
+        onClick={() => changePage(p)}
+      >
+        <span
+          style={{ fontWeight: page === p ? "bold" : "normal", fontSize: 20 }}
+        >
+          {text}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <div
       style={{
         width: "100%",
         display: "flex",
         marginBottom: 16,
-        justifyContent: "flex-end",
         paddingTop: 16,
         paddingBottom: 16,
       }}
     >
+      {_renderLink("Top tracks", "top_tracks")}
+      {_renderLink("Custom playlist", "custom_playlist")}
+      <div style={{ flex: 1 }} />
       <div
         style={{
           padding: "8px 16px",

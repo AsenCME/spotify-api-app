@@ -13,6 +13,10 @@ const scopes = [
   "user-read-playback-state",
   "user-modify-playback-state",
   "user-read-recently-played",
+  "playlist-modify-public",
+  "playlist-modify-private",
+  "playlist-read-private",
+  "user-library-modify",
 ].join("%20");
 const base = "https://accounts.spotify.com/authorize";
 

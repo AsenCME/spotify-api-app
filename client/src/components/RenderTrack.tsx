@@ -1,33 +1,16 @@
-import { useRef, useState } from "react";
-import { Track } from "../interfaces/Track";
+import React from "react";
 import { albumDate, fromMs } from "../utils/formatTime";
-import { Play } from "react-ionicons";
 
 interface Props {
-  track: Track;
+  track: SpotifyApi.TrackObjectFull;
   no: number;
+  renderButton?: () => JSX.Element;
 }
-export function RenderTrack({ track, no }: Props) {
-  const audio = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
-
-  const toggle = () => {
-    if (!audio.current) return;
-    if (playing) {
-      audio.current.pause();
-      audio.current.currentTime = 0;
-      setPlaying(false);
-    } else {
-      var previews = document.getElementsByTagName("audio");
-      for (let i = 0; i < previews.length; i++) {
-        previews[i].pause();
-        previews[i].currentTime = 0;
-      }
-      audio.current.play();
-      setPlaying(true);
-    }
-  };
-
+export function RenderTrack({
+  track,
+  no,
+  renderButton = () => <div></div>,
+}: Props) {
   return (
     <div
       style={{
@@ -76,11 +59,11 @@ export function RenderTrack({ track, no }: Props) {
           alignItems: "center",
         }}
       >
-        <a href={track.album.link}>
+        <a href={track.album.external_urls.spotify}>
           <img
             width="100px"
             height="100px"
-            src={track.album.cover}
+            src={track.album.images[0].url}
             style={{ marginRight: 16 }}
           />
         </a>
@@ -99,7 +82,7 @@ export function RenderTrack({ track, no }: Props) {
             <div>
               {track.artists.map((x, i) => (
                 <span key={`artist_${i}_track_${no}`}>
-                  <a href={x.link}>{x.name}</a>
+                  <a href={x.external_urls.spotify}>{x.name}</a>
                   <span style={{ marginRight: 4 }}>
                     {i !== track.artists.length - 1 ? "," : ""}
                   </span>
@@ -108,26 +91,19 @@ export function RenderTrack({ track, no }: Props) {
             </div>
           </div>
 
-          <a href={track.album.link} style={{ fontWeight: "bold" }}>
+          <a
+            href={track.album.external_urls.spotify}
+            style={{ fontWeight: "bold" }}
+          >
             {track.album.name} ({albumDate(track.album.release_date)})
           </a>
 
-          <div style={{ marginTop: 4 }}>{fromMs(track.duration)}</div>
+          <div style={{ marginTop: 4 }}>{fromMs(track.duration_ms)}</div>
         </div>
       </div>
 
       {/* Link buton */}
-      <div>
-        <Play
-          width="24px"
-          height="24px"
-          color="white"
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            global.window.open(track.link, "_blank");
-          }}
-        />
-      </div>
+      {renderButton()}
     </div>
   );
 }

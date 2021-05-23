@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-node";
-import { Track } from "../interfaces/Track";
 import { RenderTrack } from "./RenderTrack";
 import { ChevronDown, Add } from "react-ionicons";
 import { CreatePlaylist } from "./CreatePlaylist";
@@ -10,12 +9,16 @@ type TimeRange = "long_term" | "medium_term" | "short_term";
 export default function TopTracks({ api }: { api: SpotifyWebApi }) {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const [tracks, setTracks] = useState<SpotifyApi.TrackObjectFull[]>([]);
   const [time_range, setTimeRange] = useState<TimeRange>("long_term");
   const [noMore, setNoMore] = useState(false);
   const [modal, setModal] = useState(false);
 
-  const getNext = async (p: number, tr: TimeRange, prevTracks: Track[]) => {
+  const getNext = async (
+    p: number,
+    tr: TimeRange,
+    prevTracks: SpotifyApi.TrackObjectFull[],
+  ) => {
     setLoading(true);
     try {
       const res = await api.getMyTopTracks({
@@ -24,28 +27,7 @@ export default function TopTracks({ api }: { api: SpotifyWebApi }) {
         offset: p * limit,
       });
       if (!res.body.items.length) setNoMore(true);
-      else {
-        const items = res.body.items.map(x => {
-          return {
-            name: x.name,
-            link: x.external_urls.spotify,
-            duration: x.duration_ms,
-            popularity: x.popularity,
-            preview_url: x.preview_url,
-            artists: x.artists.map(y => ({
-              link: y.external_urls.spotify,
-              name: y.name,
-            })),
-            album: {
-              cover: x.album.images[0].url,
-              link: x.album.external_urls.spotify,
-              name: x.album.name,
-              release_date: x.album.release_date,
-            },
-          } as Track;
-        });
-        setTracks([...prevTracks, ...items]);
-      }
+      else setTracks([...prevTracks, ...res.body.items]);
     } catch (error) {
       console.log(error);
       global.window.alert(error);
@@ -156,6 +138,13 @@ export default function TopTracks({ api }: { api: SpotifyWebApi }) {
         <CreatePlaylist
           api={api}
           tracks={tracks}
+          initName={`My top songs from the last ${
+            time_range === "long_term"
+              ? "year"
+              : time_range === "medium_term"
+              ? "6 months"
+              : "month"
+          }`}
           onClose={() => setModal(false)}
         />
       )}
