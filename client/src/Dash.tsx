@@ -10,7 +10,7 @@ import useAuth from "./useAuth";
 const api = new SpotifyWebApi({
   clientId: "8b945ef10ea24755b83ac50cede405a0",
   clientSecret: "524fc97a2763460598a3420b7253ee81",
-  redirectUri: "http://localhost:3000",
+  redirectUri: "https://spotify-coolness.surge.sh/",
 });
 
 export default function Dash({ code }: { code: string }) {

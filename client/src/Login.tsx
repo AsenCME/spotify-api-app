@@ -1,7 +1,7 @@
 import logo from "./logo.png";
 
 // url stuff
-const redirectUri = "http://localhost:3000";
+const redirectUri = "https://spotify-coolness.surge.sh/";
 const clientId = "6c68970138484af086dba84c7c147503";
 const scopes = [
   "streaming",

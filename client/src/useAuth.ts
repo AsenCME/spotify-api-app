@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const serverUri = "https://9a25268cb164.ngrok.io";
 export default function useAuth(code: string) {
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
@@ -8,7 +9,7 @@ export default function useAuth(code: string) {
 
   useEffect(() => {
     axios
-      .post("http://localhost:3001/login", { code })
+      .post(serverUri + "/login", { code })
       .then((res: any) => {
         setAccessToken(res.data.accessToken);
         setRefreshToken(res.data.refreshToken);
@@ -25,7 +26,7 @@ export default function useAuth(code: string) {
   useEffect(() => {
     if (!refreshToken || !expiresIn) return;
     const interval = setInterval(() => {
-      fetch("http://localhost:3001/refresh", {
+      fetch(serverUri + "/refresh", {
         method: "POST",
         body: JSON.stringify({ refreshToken }),
         headers: { ContentType: "application/json" },
