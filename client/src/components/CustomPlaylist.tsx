@@ -14,6 +14,11 @@ import { Modal } from "./Modal";
 import { TextButton } from "./TextButton";
 import { RenderTrackSimple } from "./RenderTrackSimple";
 
+// todo
+// -> make all genres into kebab case
+// -> take only valid ones (included in array of valid genres)
+// -> then send the request
+
 interface Options {
   target_acousticness: number;
   target_danceability: number;
