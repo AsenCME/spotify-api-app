@@ -151,6 +151,3 @@ export default function TopTracks({ api }: { api: SpotifyWebApi }) {
     </>
   );
 }
-
-// todo get recommendations
-// todo make playlist from top tracks

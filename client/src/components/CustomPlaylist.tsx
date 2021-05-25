@@ -3,21 +3,18 @@ import SpotifyWebApi from "spotify-web-api-node";
 import { Button } from "./Button";
 import {
   Add,
-  MusicalNotesOutline,
-  Options,
   Remove,
   Search,
+  Options,
   SettingsOutline,
+  MusicalNotesOutline,
 } from "react-ionicons";
-import { RenderTrack } from "./RenderTrack";
+
 import { Modal } from "./Modal";
 import { TextButton } from "./TextButton";
+import { RenderTrack } from "./RenderTrack";
 import { RenderTrackSimple } from "./RenderTrackSimple";
-
-// todo
-// -> make all genres into kebab case
-// -> take only valid ones (included in array of valid genres)
-// -> then send the request
+import { genres } from "../utils/validGenres";
 
 interface Options {
   target_acousticness: number;
@@ -28,6 +25,7 @@ interface Options {
   target_speechiness: number;
   target_valence: number;
   target_tempo: number;
+  limit: number;
 }
 export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
   const [loading, setLoading] = useState(false);
@@ -50,6 +48,7 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
     target_speechiness: 0.1,
     target_valence: 0.2,
     target_tempo: 140,
+    limit: 100,
   });
 
   const doSearch = async () => {
@@ -69,9 +68,10 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
     try {
       const ids = seedTracks.flatMap(x => x.artists.map(x => x.id));
       const artistsRes = await api.getArtists(ids);
-      const seed_genres = artistsRes.body.artists.flatMap(x => x.genres);
+      const seed_genres = artistsRes.body.artists
+        .flatMap(x => x.genres.map(y => y.toLowerCase().replaceAll(" ", "-")))
+        .filter(x => genres.includes(x));
       const res = await api.getRecommendations({
-        limit: 100,
         seed_genres,
         seed_artists: ids,
         seed_tracks: seedTracks.map(x => x.id),
@@ -210,7 +210,7 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
   return (
     <div>
       <h1>Custom Playlist</h1>
-      <div style={{ display: "flex", marginBottom: 16 }}>
+      <div style={{ display: "flex", marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{ flex: 1 }} />
         <Button
           text="Seed"
@@ -296,6 +296,23 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
           >
             <h1 style={{ margin: 0, marginBottom: 32 }}>Playlist settings</h1>
             <form onSubmit={e => e.preventDefault()}>
+              <div style={{ display: "flex", marginBottom: 16 }}>
+                <div style={{ fontSize: 18, fontWeight: "bold" }}>
+                  Number of songs
+                </div>
+                <div style={{ flex: 1 }} />
+                <div style={{ marginRight: 16 }}>{options.limit}</div>
+                <input
+                  type="number"
+                  onChange={({ target: { value } }) =>
+                    setOptions({ ...options, limit: Number(value) })
+                  }
+                  min="1"
+                  max="100"
+                  style={{ width: 200 }}
+                  value={options.limit}
+                />
+              </div>
               <div style={{ display: "flex", marginBottom: 16 }}>
                 <div style={{ fontSize: 18, fontWeight: "bold" }}>
                   Target Tempo
