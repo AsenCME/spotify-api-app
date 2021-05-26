@@ -56,7 +56,7 @@ export function RenderTrackSimple({
             }}
           >
             <h2 style={{ margin: 0, padding: 0, marginRight: 8 }}>
-              {track.name}
+              <a href={track.external_urls.spotify}>{track.name}</a>
             </h2>
             <div>
               {track.artists.map((x, i) => (

@@ -68,13 +68,13 @@ export default function TopTracks({ api }: { api: SpotifyWebApi }) {
         <div
           style={{
             display: "flex",
-            alignItems: "baseline",
+            flexWrap: "wrap",
             marginBottom: 16,
+            alignItems: "flex-start",
           }}
         >
-          <h1 style={{ margin: 0 }}>Top Tracks</h1>
-          <div style={{ flex: 1 }} />
-          <div style={{ display: "flex" }}>
+          <h1 style={{ margin: 0, marginBottom: 8 }}>Top Tracks</h1>
+          <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             {_renderTimeRange("1+ Year", "long_term")}
             {_renderTimeRange("Last 6 months", "medium_term")}
             {_renderTimeRange("Last 4 weeks", "short_term")}

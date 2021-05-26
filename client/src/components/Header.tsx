@@ -34,30 +34,34 @@ export default function Header({
         marginBottom: 16,
         paddingTop: 16,
         paddingBottom: 16,
+        flexWrap: "wrap",
       }}
     >
-      {_renderLink("Top tracks", "top_tracks")}
-      {_renderLink("Custom playlist", "custom_playlist")}
-      <div style={{ flex: 1 }} />
-      <div
-        style={{
-          padding: "8px 16px",
-          display: "flex",
-          alignItems: "center",
-          borderRadius: "100vw",
-          justifyContent: "center",
-          backgroundColor: "var(--color-2)",
-        }}
-      >
-        <img
-          width="32px"
-          height="32px"
-          src={me.image}
-          style={{ borderRadius: 16 }}
-        />
-        <div style={{ marginLeft: 16, fontSize: 14 }}>
-          <div style={{ fontWeight: "bold" }}>{me.name}</div>
-          <div>{me.followers} followers</div>
+      <div style={{ display: "flex" }}>
+        {_renderLink("Top tracks", "top_tracks")}
+        {_renderLink("Custom playlist", "custom_playlist")}
+      </div>
+      <div style={{ display: "flex", justifyContent: "flex-end", flex: 1 }}>
+        <div
+          style={{
+            padding: "8px 16px",
+            display: "flex",
+            alignItems: "center",
+            borderRadius: "100vw",
+            justifyContent: "center",
+            backgroundColor: "var(--color-2)",
+          }}
+        >
+          <img
+            width="32px"
+            height="32px"
+            src={me.image}
+            style={{ borderRadius: 16 }}
+          />
+          <div style={{ marginLeft: 16, fontSize: 14 }}>
+            <div style={{ fontWeight: "bold" }}>{me.name}</div>
+            <div>{me.followers} followers</div>
+          </div>
         </div>
       </div>
     </div>

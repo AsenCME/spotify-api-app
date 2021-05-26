@@ -41,7 +41,14 @@ export default function Dash({ code }: { code: string }) {
 
   if (!api.getAccessToken()) return null;
   return (
-    <div style={{ maxWidth: 960, margin: "0 auto" }}>
+    <div
+      style={{
+        maxWidth: 960 + 16,
+        paddingLeft: 8,
+        paddingRight: 8,
+        margin: "0 auto",
+      }}
+    >
       {!me ? null : <Header me={me} page={page} changePage={p => setPage(p)} />}
       {_renderBody()}
     </div>

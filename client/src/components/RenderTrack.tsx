@@ -11,6 +11,8 @@ export function RenderTrack({
   no,
   renderButton = () => <div></div>,
 }: Props) {
+  const isPhone = global.window.innerWidth <= 900;
+  const size = isPhone ? "50px" : "100px";
   return (
     <div
       style={{
@@ -40,12 +42,12 @@ export function RenderTrack({
       {/* Track number */}
       <div
         style={{
-          width: 50,
-          fontSize: 20,
           display: "flex",
-          marginRight: 16,
           fontWeight: "bold",
           justifyContent: "center",
+          width: isPhone ? 30 : 50,
+          fontSize: isPhone ? 14 : 20,
+          marginRight: isPhone ? 8 : 16,
         }}
       >
         {no}.
@@ -61,10 +63,10 @@ export function RenderTrack({
       >
         <a href={track.album.external_urls.spotify}>
           <img
-            width="100px"
-            height="100px"
+            width={size}
+            height={size}
+            style={{ marginRight: isPhone ? 8 : 16 }}
             src={track.album.images[0].url}
-            style={{ marginRight: 16 }}
           />
         </a>
         <div>
@@ -77,7 +79,7 @@ export function RenderTrack({
             }}
           >
             <h2 style={{ margin: 0, padding: 0, marginRight: 8 }}>
-              {track.name}
+              <a href={track.external_urls.spotify}>{track.name}</a>
             </h2>
             <div>
               {track.artists.map((x, i) => (

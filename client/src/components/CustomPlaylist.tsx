@@ -8,6 +8,7 @@ import {
   Options,
   SettingsOutline,
   MusicalNotesOutline,
+  Play,
 } from "react-ionicons";
 
 import { Modal } from "./Modal";
@@ -95,6 +96,7 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
             }}
             style={{ flex: 1, marginRight: 32 }}
           >
+            {searching ? <div>Searching...</div> : null}
             <input
               type="text"
               placeholder="Search songs..."
@@ -122,6 +124,7 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
           />
         </div>
         <div>
+          {loading ? <div>Loading...</div> : null}
           {results.map((t, i) => (
             <RenderTrack
               key={i}
@@ -214,29 +217,33 @@ export function CustomPlaylist({ api }: { api: SpotifyWebApi }) {
         <div style={{ flex: 1 }} />
         <Button
           text="Seed"
+          onClick={() => setOpenSeed(true)}
           renderIcon={() => (
             <SettingsOutline width="24px" height="24px" color="black" />
           )}
-          onClick={() => setOpenSeed(true)}
         />
-        <div style={{ marginRight: 16 }} />
+        <div style={{ width: 16 }} />
         <Button
           text="Settings"
+          onClick={() => setOpenSettings(true)}
           renderIcon={() => (
             <Options width="24px" height="24px" color="black" />
           )}
-          onClick={() => setOpenSettings(true)}
         />
-        <div style={{ marginRight: 16 }} />
+        <div style={{ width: 16 }} />
         <Button
           text="Get Tracks"
+          onClick={() => getTracks()}
           renderIcon={() => (
             <MusicalNotesOutline width="24px" height="24px" color="black" />
           )}
-          onClick={() => getTracks()}
         />
-        <div style={{ marginRight: 16 }} />
-        <Button text="Make into playlist" onClick={create} />
+        <div style={{ width: 16 }} />
+        <Button
+          text="Make into playlist"
+          onClick={create}
+          renderIcon={() => <Play width="24px" height="24px" color="black" />}
+        />
       </div>
       <div>
         {!tracks.length ? (
