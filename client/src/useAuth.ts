@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const serverUri = "https://05e20da7f6bb.ngrok.io";
+const serverUri = "https://37b78d35f091.ngrok.io";
 export default function useAuth(code: string) {
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
